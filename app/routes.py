@@ -35,12 +35,12 @@ def loadModel():
 	return model_intent
 
 @app.route('/',methods=['POST','GET'])
-@app.route('/index',methods=['POST','GET'])
+@app.route('/test',methods=['POST','GET'])
 def prediksi():
-	sentence =request.form.get('sentence')
+	sentence =request.args.get('sentence')
+	# sentence = 'halo nama saya joko'
 	model = loadModel()
 	print(sentence)
-	# sentence = 'halo nama saya joko'
 	label_intent = np.array(['TRANSACTION', 'OTHERS', 'RECORD', 'PROFIL', 'GREETINGS','CLOSINGS'])
 	inputs = [clean_text(sentence)]
 	inputs = convertToDict(inputs)

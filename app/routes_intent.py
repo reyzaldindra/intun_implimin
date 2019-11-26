@@ -9,7 +9,7 @@ from flask import Flask, abort, jsonify, request
 app = Flask(__name__)
 
 
-def _removeNonAscii(s): 
+def _removeNonAscii(s):
     return "".join(i for i in s if ord(i)<128)
 
 def clean_text(text):
@@ -20,13 +20,12 @@ def clean_text(text):
 	return text
 
 def convertToDict(sequence):
-	idx_to_word = np.load('vocab.npy').tolist()
-	word_to_idx = {}
-	for i,(index,word) in enumerate(idx_to_word.items()):
-		word_to_idx[word] = index
-	seq = [np.array([word_to_idx[s] if s in word_to_idx else word_to_idx['<unk>'] for s in es.split(' ')],dtype=np.int64) for es in sequence]
-	seq = [np.array(a) for a in seq]
-	return seq
+    idx_to_word = np.load('vocab.npy').tolist()
+    word_to_idx = {}
+    for i,(index,word) in enumerate(idx_to_word.items()):
+        word_to_idx[word] = index
+    seq = [np.array([word_to_idx[s] if s in word_to_idx else word_to_idx['<unk>'] for s in es.split(' ')],dtype=np.int64) for es in sequence]
+    return seq
 
 def loadModel():
 	state_intent = torch.load('bpjs.pth.tar')
@@ -43,8 +42,11 @@ def prediksi():
 	print(sentence)
 	label_intent = np.array(['TRANSACTION', 'OTHERS', 'RECORD', 'PROFIL', 'GREETINGS','CLOSINGS'])
 	inputs = [clean_text(sentence)]
+	print(inputs)
 	inputs = convertToDict(inputs)
+	print(inputs)
 	output=model(torch.tensor(inputs).permute(1,0))
+	print(output)
 	output=label_intent[torch.max(output, 1)[1]]
 	return output
 

@@ -31,6 +31,7 @@ def clean_entity(text):
 	text = text.split(',')
 	return text
 
+
 def convertToDict(sequence):
 	vocab = sorted(set(np.load('vocab.npy')))
 	word_to_idx = {}
